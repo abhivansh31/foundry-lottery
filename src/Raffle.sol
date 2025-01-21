@@ -10,24 +10,36 @@ pragma solidity ^0.8.18;
 
 contract Raffle {
     error sendMoreEthtoEnterRaffle();
-    uint256 private entranceFee;
+    error notEnoughTimePassed();
 
-    event raffleentered(address);
+    uint256 private i_entranceFee;
+    address payable[] private s_players;
+    uint256 private immutable i_interval;
+    uint256 private lastTimeStamp;
 
-    constructor(uint256 fee) {
-        entranceFee = fee;
+    event raffleentered(address indexed player);
+
+    constructor(uint256 _fee, uint256 _interval) {
+        i_entranceFee = _fee;
+        i_interval = _interval;
+        lastTimeStamp = block.timestamp;
     }
 
     function enterRaffle() public payable {
-        if (msg.value < entranceFee) {
+        if (msg.value < i_entranceFee) {
             revert sendMoreEthtoEnterRaffle();
         }
-        emit raffleentered(msg.sender);
+        s_players.push(payable(msg.sender));
+        emit raffleentered(msg.sender); // Everytime we update storage we use an event
     }
 
-    function selectWinner() public {}
+    function selectWinner() public {
+        if (block.timestamp - lastTimeStamp < i_interval) {
+            revert notEnoughTimePassed();
+        }
+    }
 
     function getEntranceFee() public view returns (uint256) {
-        return entranceFee;
+        return i_entranceFee;
     }
 }
