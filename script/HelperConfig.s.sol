@@ -3,6 +3,7 @@ pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 import {VRFCoordinatorV2_5Mock} from "../lib/chainlink-brownie-contracts/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
+import {LinkToken} from "../test/mocks/LinkToken.sol";
 
 contract HelperConfig is Script {
     uint96 public MOCK_BASE_FEE = 0.25 ether;
@@ -18,6 +19,7 @@ contract HelperConfig is Script {
         uint256 entranceFee;
         uint32 callbackGasLimit;
         address vrfCoordinatorV2;
+        address link;
     }
 
     uint256 public constant SEPOLIA_CHAIN_ID = 1115111;
@@ -56,14 +58,18 @@ contract HelperConfig is Script {
                 MOCK_GAS_PRICE_LINK,
                 MOCK_WEI_PER_UINT_LINK
             );
+            LinkToken link = new LinkToken();
+            // uint256 subscriptionId = mock.createSubscription();
             config = NetworkConfig({
                 subscriptionId: 0,
                 gasLane: 0x873f3bcf0c6f44c9a7ff4eaaaf1f2ccf5ed8cc688c566f9a9c8ca41ecae3e722,
                 interval: 30,
                 entranceFee: 0.01 ether,
                 callbackGasLimit: 5000000,
-                vrfCoordinatorV2: address(mock)
+                vrfCoordinatorV2: address(mock),
+                link: address(link)
             });
+            vm.stopBroadcast();
             return config;
         }
     }
@@ -76,7 +82,8 @@ contract HelperConfig is Script {
                 interval: 30,
                 entranceFee: 0.01 ether,
                 callbackGasLimit: 5000000,
-                vrfCoordinatorV2: 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625
+                vrfCoordinatorV2: 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625,
+                link: 0x643315C9Be056cDEA171F4e7b2222a4ddaB9F88D
             });
     }
 }

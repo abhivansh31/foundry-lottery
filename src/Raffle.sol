@@ -137,4 +137,12 @@ contract Raffle is VRFConsumerBaseV2Plus {
         lastTimeStamp = block.timestamp;
         s_raffleState = RaffleState.OPEN;
     }
+
+    function getRaffleState() external view returns (RaffleState) {
+        return s_raffleState;
+    }
+
+    function getPlayers(uint256 index) external view returns (address) {
+        return s_players[index];
+    }
 }
