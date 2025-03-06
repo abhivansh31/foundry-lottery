@@ -33,7 +33,7 @@ contract Raffle {
         emit raffleentered(msg.sender); // Everytime we update storage we use an event
     }
 
-    function selectWinner() public {
+    function selectWinner() public view {
         if (block.timestamp - lastTimeStamp < i_interval) {
             revert notEnoughTimePassed();
         }
