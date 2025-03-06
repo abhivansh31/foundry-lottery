@@ -30,7 +30,7 @@ contract Raffle {
             revert sendMoreEthtoEnterRaffle();
         }
         s_players.push(payable(msg.sender));
-        emit raffleentered(msg.sender); // Everytime we update storage we use an event
+        emit raffleentered(msg.sender); 
     }
 
     function selectWinner() public view {
