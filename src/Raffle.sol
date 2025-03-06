@@ -17,7 +17,7 @@ contract Raffle {
     uint256 private immutable i_interval;
     uint256 private lastTimeStamp;
 
-    event raffleentered(address indexed player);
+    event EnteredRaffle(address indexed player);
 
     constructor(uint256 _fee, uint256 _interval) {
         i_entranceFee = _fee;
@@ -30,7 +30,7 @@ contract Raffle {
             revert sendMoreEthtoEnterRaffle();
         }
         s_players.push(payable(msg.sender));
-        emit raffleentered(msg.sender); 
+        emit EnteredRaffle(msg.sender); 
     }
 
     function selectWinner() public view {
