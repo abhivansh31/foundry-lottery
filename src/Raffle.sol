@@ -106,7 +106,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
             revert upKeepNotNeeded(block.timestamp - lastTimeStamp, uint256(s_raffleState), address(this).balance, s_players.length);
         }
         s_raffleState = RaffleState.CALCULATING_WINNER;
-        VRFV2PlusClient.RandomWordsRequest memory request = VRFV2PlusClient
+        /*VRFV2PlusClient.RandomWordsRequest memory request =*/ VRFV2PlusClient
             .RandomWordsRequest({
                 keyHash: i_gasLane,
                 subId: i_subscriptionId,
@@ -118,11 +118,11 @@ contract Raffle is VRFConsumerBaseV2Plus {
                 )
             });
 
-        uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
+        // uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
     }
 
     function fulfillRandomWords(
-        uint256 requestId,
+        uint256 /*requestId*/,
         uint256[] calldata randomWords
     ) internal virtual override {
         uint256 winnerIndex = uint256(randomWords[0]) % s_players.length;
