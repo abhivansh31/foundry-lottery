@@ -8,4 +8,7 @@ fs_permissions = [
 ]
 remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
 
+[fuzz]
+runs = 256
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

@@ -45,11 +45,12 @@ contract FundSubscription is Script {
                 subscriptionId,
                 FUND_AMOUNT
             );
+            vm.stopBroadcast();
         } else {
             vm.startBroadcast();
             LinkToken(linkToken).transferAndCall(
                 vrfCoordinator,
-                FUND_AMOUNT,
+                FUND_AMOUNT * 100,
                 abi.encode(subscriptionId)
             );
             vm.stopBroadcast();
