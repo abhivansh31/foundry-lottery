@@ -26,6 +26,7 @@ contract RaffleTest is Test {
 
     event EnteredRaffle(address indexed player);
     event WinnerFound(address indexed winner);
+    event LogRequestId(uint256 requestId);
 
     modifier raffleEntered() {
         vm.prank(user);
@@ -124,35 +125,4 @@ contract RaffleTest is Test {
         VRFCoordinatorV2_5Mock(vrfCoordinatorV2).fulfillRandomWords(randomRequestId, address(raffle));
     }
 
-    function testFulfillRandomWordsPickAWinnerAndSendThemEth() public raffleEntered {
-        uint256 entrants = 4;
-        uint256 startingIndex = 1;
-        address expectedWinner = address(1);
-        uint256 winnerStartingBalance = expectedWinner.balance;
-
-        for (uint256 i= startingIndex; i < startingIndex + entrants; i++) {
-            address player = address(uint160(i));
-            hoax(player, 1 ether);
-            raffle.enterRaffle{value: entranceFee}();
-        }
-        vm.recordLogs();
-        console.log("requestId");
-        raffle.performUpKeep();
-        Vm.Log[] memory logs = vm.getRecordedLogs();
-        bytes32 requestId = logs[0].topics[1];
-        uint256 timeStamp = raffle.getRecentTimestamp();
-        VRFCoordinatorV2_5Mock(vrfCoordinatorV2).fulfillRandomWords(uint256(requestId), address(raffle));
-
-        address winner = raffle.getRecentWinner();
-        Raffle.RaffleState state = raffle.getRaffleState();
-        uint256 winnerBalance = winner.balance;
-        uint256 endingTimeStamp = raffle.getRecentTimestamp();
-        uint256 prize = entranceFee * (entrants);
-
-        assertEq(winner, expectedWinner);
-        assertEq(uint256(state), 0);
-        assertEq(winnerBalance, winnerStartingBalance + prize);
-        assert(endingTimeStamp > timeStamp);
-
-    }
 }

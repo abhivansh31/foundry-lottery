@@ -20,9 +20,10 @@ contract HelperConfig is Script {
         uint32 callbackGasLimit;
         address vrfCoordinatorV2;
         address link;
+        address account;
     }
 
-    uint256 public constant SEPOLIA_CHAIN_ID = 1115111;
+    uint256 public constant SEPOLIA_CHAIN_ID = 11155111;
     uint256 public constant ANVIL_CHAIN_ID = 31337;
 
     NetworkConfig public config;
@@ -67,7 +68,8 @@ contract HelperConfig is Script {
                 entranceFee: 0.01 ether,
                 callbackGasLimit: 5000000,
                 vrfCoordinatorV2: address(mock),
-                link: address(link)
+                link: address(link),
+                account: 0x2E0e85348e792983D86A5E1174F88aABB015F22A
             });
             vm.stopBroadcast();
             return config;
@@ -83,7 +85,8 @@ contract HelperConfig is Script {
                 entranceFee: 0.01 ether,
                 callbackGasLimit: 5000000,
                 vrfCoordinatorV2: 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625,
-                link: 0x643315C9Be056cDEA171F4e7b2222a4ddaB9F88D
+                link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+                account: 0x2E0e85348e792983D86A5E1174F88aABB015F22A
             });
     }
 }
